@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+:root {
+  --color-ink: #0b0a0c;
+  --color-parchment: #f4ede1;
+  --color-oxblood: #5c1a1b;
+  --color-brass: #b08d57;
+}
+
+html,
+body {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+}
+
+* {
+  box-sizing: border-box;
+}

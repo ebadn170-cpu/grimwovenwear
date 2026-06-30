@@ -1,0 +1,484 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["dev", "public"]
+}
+
+// ---------------------------------------------------------------------------
+// AUTH (NextAuth v5 compatible)
+// ---------------------------------------------------------------------------
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+  @@schema("dev")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          Role      @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  addresses     Address[]
+  cart          Cart?
+  wishlist      WishlistItem[]
+  orders        Order[]
+  reviews       Review[]
+  journalPosts  JournalPost[]
+  inventoryLogs InventoryLog[]
+
+  @@map("users")
+  @@schema("dev")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+  @@schema("dev")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+  @@schema("dev")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// ADDRESSES
+// ---------------------------------------------------------------------------
+
+enum AddressType {
+  SHIPPING
+  BILLING
+  @@schema("dev")
+}
+
+model Address {
+  id          String      @id @default(cuid())
+  userId      String
+  type        AddressType @default(SHIPPING)
+  fullName    String
+  phone       String
+  line1       String
+  line2       String?
+  city        String
+  state       String?
+  postalCode  String?
+  country     String      @default("PK")
+  isDefault   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ordersAsShipping Order[] @relation("ShippingAddress")
+  ordersAsBilling  Order[] @relation("BillingAddress")
+
+  @@map("addresses")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// CATALOG
+// ---------------------------------------------------------------------------
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+  @@schema("dev")
+}
+
+model Collection {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  coverImage  String?
+  isFeatured  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  products Product[] @relation("ProductCollections")
+
+  @@map("collections")
+  @@schema("dev")
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+  @@schema("dev")
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  description String        @db.Text
+  status      ProductStatus @default(DRAFT)
+  basePrice   Decimal       @db.Decimal(10, 2)
+  categoryId  String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  category    Category?         @relation(fields: [categoryId], references: [id])
+  collections Collection[]      @relation("ProductCollections")
+  variants    ProductVariant[]
+  images      ProductImage[]
+  reviews     Review[]
+  cartItems   CartItem[]
+  wishlistedBy WishlistItem[]
+  orderItems  OrderItem[]
+
+  @@map("products")
+  @@schema("dev")
+}
+
+model ProductVariant {
+  id        String   @id @default(cuid())
+  productId String
+  sku       String   @unique
+  size      String?
+  color     String?
+  price     Decimal? @db.Decimal(10, 2) // overrides basePrice if set
+  stock     Int      @default(0)
+  lowStockThreshold Int @default(5)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product       Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  inventoryLogs InventoryLog[]
+
+  @@map("product_variants")
+  @@schema("dev")
+}
+
+model ProductImage {
+  id        String   @id @default(cuid())
+  productId String
+  url       String
+  altText   String?
+  position  Int      @default(0)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// CART & WISHLIST
+// ---------------------------------------------------------------------------
+
+model Cart {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+
+  @@map("carts")
+  @@schema("dev")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String
+  variantId String?
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart    Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@unique([cartId, productId, variantId])
+  @@map("cart_items")
+  @@schema("dev")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// ORDERS & PAYMENTS
+// ---------------------------------------------------------------------------
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAYMENT_CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  @@schema("dev")
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique
+  userId            String
+  status            OrderStatus @default(PENDING_PAYMENT)
+  subtotal          Decimal     @db.Decimal(10, 2)
+  discountTotal     Decimal     @default(0) @db.Decimal(10, 2)
+  shippingTotal     Decimal     @default(0) @db.Decimal(10, 2)
+  total             Decimal     @db.Decimal(10, 2)
+  couponId          String?
+  shippingAddressId String
+  billingAddressId  String
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  user            User       @relation(fields: [userId], references: [id])
+  coupon          Coupon?    @relation(fields: [couponId], references: [id])
+  shippingAddress Address    @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress  Address    @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  items           OrderItem[]
+  payment         Payment?
+
+  @@map("orders")
+  @@schema("dev")
+}
+
+model OrderItem {
+  id           String   @id @default(cuid())
+  orderId      String
+  productId    String
+  variantId    String?
+  productName  String   // snapshot at time of order
+  variantLabel String?  // snapshot, e.g. "Black / M"
+  unitPrice    Decimal  @db.Decimal(10, 2)
+  quantity     Int
+
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("order_items")
+  @@schema("dev")
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  EASYPAISA
+  @@schema("dev")
+}
+
+enum PaymentStatus {
+  PENDING
+  AWAITING_VERIFICATION
+  PAID
+  FAILED
+  REFUNDED
+  @@schema("dev")
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  orderId           String        @unique
+  method            PaymentMethod
+  status            PaymentStatus @default(PENDING)
+  amount            Decimal       @db.Decimal(10, 2)
+  proofImageUrl     String?       // for bank transfer proof-of-payment uploads
+  easypaisaTxnId    String?
+  verifiedByUserId  String?
+  verifiedAt        DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// COUPONS
+// ---------------------------------------------------------------------------
+
+enum CouponType {
+  PERCENTAGE
+  FIXED_AMOUNT
+  @@schema("dev")
+}
+
+model Coupon {
+  id          String     @id @default(cuid())
+  code        String     @unique
+  type        CouponType
+  value       Decimal    @db.Decimal(10, 2)
+  minSpend    Decimal?   @db.Decimal(10, 2)
+  maxUses     Int?
+  usedCount   Int        @default(0)
+  startsAt    DateTime?
+  expiresAt   DateTime?
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  orders Order[]
+
+  @@map("coupons")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// REVIEWS
+// ---------------------------------------------------------------------------
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  @@schema("dev")
+}
+
+model Review {
+  id        String       @id @default(cuid())
+  productId String
+  userId    String
+  rating    Int // 1-5
+  title     String?
+  body      String       @db.Text
+  status    ReviewStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// CMS / JOURNAL (editorial content)
+// ---------------------------------------------------------------------------
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  @@schema("dev")
+}
+
+model JournalPost {
+  id           String     @id @default(cuid())
+  title        String
+  slug         String     @unique
+  kicker       String?    // small label above headline, e.g. "FIELD NOTES"
+  coverLine    String?    // magazine-style teaser line
+  pullQuote    String?
+  issueNumber  String?
+  coverImage   String?
+  body         String     @db.Text
+  status       PostStatus @default(DRAFT)
+  authorId     String
+  publishedAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map("journal_posts")
+  @@schema("dev")
+}
+
+// ---------------------------------------------------------------------------
+// INVENTORY
+// ---------------------------------------------------------------------------
+
+enum InventoryAction {
+  RESTOCK
+  SALE
+  ADJUSTMENT
+  RETURN
+  @@schema("dev")
+}
+
+model InventoryLog {
+  id         String           @id @default(cuid())
+  variantId  String
+  action     InventoryAction
+  quantity   Int // positive = added, negative = removed
+  note       String?
+  actedById  String?
+  createdAt  DateTime         @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  actedBy User?          @relation(fields: [actedById], references: [id])
+
+  @@map("inventory_logs")
+  @@schema("dev")
+}
