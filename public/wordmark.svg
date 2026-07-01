@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 160" width="480" height="160" role="img" aria-label="GrimWovenWear">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&family=Inter:wght@500&display=swap');
+    </style>
+  </defs>
+
+  <!-- Background: transparent (works on dark bg) -->
+
+  <!-- Thin top rule — brass -->
+  <line x1="40" y1="18" x2="440" y2="18" stroke="#b08d57" stroke-width="0.75" opacity="0.6"/>
+
+  <!-- GRIM — large serif italic display -->
+  <text
+    x="40"
+    y="100"
+    font-family="'DM Serif Display', Georgia, serif"
+    font-style="italic"
+    font-size="88"
+    fill="#f4ede1"
+    letter-spacing="-2"
+  >GRIM</text>
+
+  <!-- WOVEN WEAR — small Inter, wide tracking, stacked under -->
+  <text
+    x="44"
+    y="130"
+    font-family="'Inter', system-ui, sans-serif"
+    font-weight="500"
+    font-size="16"
+    fill="#b08d57"
+    letter-spacing="10"
+  >WOVEN WEAR</text>
+
+  <!-- Thin bottom rule — brass -->
+  <line x1="40" y1="148" x2="440" y2="148" stroke="#b08d57" stroke-width="0.75" opacity="0.6"/>
+</svg>
