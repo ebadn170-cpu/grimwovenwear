@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
 @font-face {
   font-family: 'AncientGeek';
   src: url('/fonts/AncientGeek.ttf') format('truetype');
@@ -5,9 +8,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-
-@import "tailwindcss";
 
 /* ============================================================
    GRIMWOVENWEAR — DESIGN SYSTEM TOKENS
@@ -18,46 +18,45 @@
 
   /* ----------------------------------------------------------
      COLOR PALETTE
-     Dark academia / gothic luxury — ink darks, parchment
-     warmth, oxblood depth, aged brass accents
+     Dark academia / gothic luxury — refined with warm, sophisticated tones
      ---------------------------------------------------------- */
 
-  /* Base */
-  --color-ink:          #0b0a0c; /* near-black, warm not cool */
-  --color-ink-soft:     #16141a; /* slightly lifted dark for surfaces */
-  --color-ink-muted:    #2a2630; /* borders, dividers */
-  --color-ink-subtle:   #3d3847; /* disabled states, placeholders */
+  /* Base — Deep blacks with warm undertones */
+  --color-ink:          #050505; /* Pure deep black */
+  --color-ink-soft:     #0f0f0f; /* Slightly lifted for surfaces */
+  --color-ink-muted:    #1a1a1a; /* Borders, dividers */
+  --color-ink-subtle:   #2a2a2a; /* Disabled states, placeholders */
 
-  /* Parchment — warm off-whites */
-  --color-parchment:        #f4ede1; /* primary text on dark */
-  --color-parchment-dim:    #c9bfb0; /* secondary text, captions */
-  --color-parchment-ghost:  #7a7168; /* tertiary text, metadata */
+  /* Parchment — Warm off-whites with refined elegance */
+  --color-parchment:        #F5F3EF; /* Primary text on dark */
+  --color-parchment-dim:    #B8B3AA; /* Secondary text, captions */
+  --color-parchment-ghost:  #8B8680; /* Tertiary text, metadata */
 
-  /* Oxblood — brand accent, deep crimson */
+  /* Oxblood — Deep crimson accent (reserved for special emphasis) */
   --color-oxblood:        #5c1a1b;
   --color-oxblood-bright: #7a2223; /* hover/active states */
   --color-oxblood-muted:  #3d1112; /* subtle tints */
 
-  /* Brass — secondary accent, aged gold */
-  --color-brass:        #b08d57;
-  --color-brass-bright: #c9a46a; /* hover */
-  --color-brass-muted:  #7a6038; /* subtle tints */
-  --color-brass-dim:    #3d2f1c; /* very subtle backgrounds */
+  /* Brass — Refined gold accent, warm and sophisticated */
+  --color-brass:        #C6A15B; /* Primary accent */
+  --color-brass-bright: #D9B876; /* hover states */
+  --color-brass-muted:  #A68847; /* subtle tints */
+  --color-brass-dim:    #6B5F3F; /* very subtle backgrounds */
 
   /* Utility */
   --color-success: #3d6b4f;
   --color-warning: #8a6a1f;
   --color-error:   #7a2223;
-  --color-focus:   #b08d57; /* brass for focus rings — visible on dark */
+  --color-focus:   #C6A15B; /* brass for focus rings */
 
   /* ----------------------------------------------------------
      TYPOGRAPHY
-     Display: DM Serif Display — literary, editorial weight
-     Body:    Inter — clean grotesque, neutral but refined
-     Mono:    JetBrains Mono — for order numbers, codes, labels
+     Display: Cormorant Garamond — elegant, editorial serif
+     Body:    Inter — clean, modern sans-serif
+     Mono:    JetBrains Mono — for codes and labels
      ---------------------------------------------------------- */
 
-  --font-display: "DM Serif Display", "Georgia", serif;
+  --font-display: "Cormorant Garamond", "Georgia", serif;
   --font-body:    "Inter", "system-ui", sans-serif;
   --font-mono:    "JetBrains Mono", "Courier New", monospace;
 
@@ -151,14 +150,14 @@
 
   /* ----------------------------------------------------------
      SHADOWS
-     Warm-toned, not neutral grey — fits the dark palette
+     Warm-toned, sophisticated — fits the dark palette
      ---------------------------------------------------------- */
 
-  --shadow-sm:  0 1px 3px 0 rgba(11, 10, 12, 0.6);
-  --shadow-md:  0 4px 12px 0 rgba(11, 10, 12, 0.7);
-  --shadow-lg:  0 8px 32px 0 rgba(11, 10, 12, 0.8);
-  --shadow-glow-brass: 0 0 24px 0 rgba(176, 141, 87, 0.25);
-  --shadow-glow-oxblood: 0 0 24px 0 rgba(92, 26, 27, 0.4);
+  --shadow-sm:  0 1px 3px 0 rgba(5, 5, 5, 0.8);
+  --shadow-md:  0 4px 12px 0 rgba(5, 5, 5, 0.9);
+  --shadow-lg:  0 8px 32px 0 rgba(5, 5, 5, 0.95);
+  --shadow-glow-brass: 0 0 24px 0 rgba(198, 161, 91, 0.2);
+  --shadow-glow-oxblood: 0 0 24px 0 rgba(92, 26, 27, 0.3);
 
   /* ----------------------------------------------------------
      Z-INDEX SCALE
@@ -224,8 +223,8 @@ html {
 
 /* Selection */
 ::selection {
-  background-color: var(--color-oxblood);
-  color: var(--color-parchment);
+  background-color: var(--color-brass);
+  color: var(--color-ink);
 }
 
 /* Focus ring — brass, not browser default blue */
@@ -238,10 +237,10 @@ html {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-ink-soft); }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ink-muted);
+  background: var(--color-brass-muted);
   border-radius: var(--radius-full);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--color-brass-muted); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-brass); }
 
 /* ============================================================
    TYPOGRAPHY UTILITIES

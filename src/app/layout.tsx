@@ -1,9 +1,38 @@
 import type { Metadata } from "next";
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+/**
+ * Self-hosted via next/font — no external request, no render-blocking
+ * <link> tags, no layout shift. Each font exposes a CSS variable that
+ * globals.css wires into the --font-display / --font-body / --font-mono
+ * design tokens.
+ */
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jbmono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "GrimWovenWear",
-  description: "Gothic-academic streetwear, woven for the modern grimoire.",
+  description: "Dark couture, woven for the modern house.",
 };
 
 export default function RootLayout({
@@ -12,15 +41,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

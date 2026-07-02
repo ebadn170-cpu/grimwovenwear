@@ -33,7 +33,7 @@ export function HeroWordmark() {
       tl.fromTo(
         "[data-reveal='rule-top']",
         { scaleX: 0, opacity: 0 },
-        { scaleX: 1, opacity: 0.5, duration: 0.9, ease: "expo.out" }
+        { scaleX: 1, opacity: 0.4, duration: 0.9, ease: "expo.out" }
       )
         .fromTo(
           "[data-reveal='kicker']",
@@ -50,7 +50,7 @@ export function HeroWordmark() {
         .fromTo(
           "[data-reveal='divider']",
           { scaleX: 0, opacity: 0 },
-          { scaleX: 1, opacity: 0.6, duration: 0.7 },
+          { scaleX: 1, opacity: 0.5, duration: 0.7 },
           "-=0.55"
         )
         .fromTo(
@@ -62,7 +62,7 @@ export function HeroWordmark() {
         .fromTo(
           "[data-reveal='rule-bottom']",
           { scaleX: 0, opacity: 0 },
-          { scaleX: 1, opacity: 0.5, duration: 0.9 },
+          { scaleX: 1, opacity: 0.4, duration: 0.9 },
           "-=0.6"
         );
     }, rootRef);
@@ -78,18 +78,17 @@ export function HeroWordmark() {
       {/* Top ornament */}
       <div
         data-reveal="rule-top"
-        className="mb-6 flex items-center gap-3 md:mb-8"
+        className="mb-8 flex items-center gap-4 md:mb-10"
       >
-        <span className="h-px w-14 bg-brass opacity-50 md:w-16" />
-        <span className="h-1 w-1 rotate-45 bg-brass opacity-80" />
-        <span className="h-px w-14 bg-brass opacity-50 md:w-16" />
+        <span className="h-px w-16 bg-brass opacity-40 md:w-20" />
+        <span className="h-1.5 w-1.5 rotate-45 bg-brass opacity-70" />
+        <span className="h-px w-16 bg-brass opacity-40 md:w-20" />
       </div>
 
       {/* Issue label — kicker */}
       <p
         data-reveal="kicker"
-        className="mb-1 font-body text-xs font-semibold tracking-widest text-brass uppercase md:mb-2"
-        style={{ letterSpacing: "0.3em" }}
+        className="mb-2 font-body text-[10px] font-semibold tracking-[0.35em] text-brass uppercase md:mb-3"
       >
         Est. MMXXVI
       </p>
@@ -99,35 +98,27 @@ export function HeroWordmark() {
         data-reveal="wordmark"
         className="text-parchment"
         style={{
-          fontFamily: "'AncientGeek', serif",
-          fontSize: "clamp(84px, 15vw, 160px)",
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(90px, 14vw, 160px)",
           fontWeight: 400,
-          lineHeight: 0.9,
-          letterSpacing: "0.08em",
+          lineHeight: 0.75,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
           margin: 0,
+          textShadow: "0 8px 24px rgba(0, 0, 0, 0.6)",
         }}
       >
-        Grim
+        Gr&phi;m
       </h1>
 
       {/* Divider rule with diamond */}
       <div
         data-reveal="divider"
-        className="my-1 flex items-center gap-3 md:my-2"
+        className="my-3 flex items-center gap-4 md:my-4"
       >
-        <span className="h-px w-20 bg-brass opacity-60" />
-        <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-          <rect
-            x="4"
-            y="0"
-            width="5.66"
-            height="5.66"
-            transform="rotate(45 4 0)"
-            fill="#b08d57"
-            opacity="0.9"
-          />
-        </svg>
-        <span className="h-px w-20 bg-brass opacity-60" />
+        <span className="h-px w-28 bg-brass opacity-35" />
+        <div className="h-1.5 w-1.5 rotate-45 bg-brass opacity-70" />
+        <span className="h-px w-28 bg-brass opacity-35" />
       </div>
 
       {/* WOVEN WEAR — spaced sans beneath */}
@@ -135,9 +126,9 @@ export function HeroWordmark() {
         data-reveal="subtitle"
         className="font-body text-parchment-dim uppercase"
         style={{
-          fontSize: "clamp(11px, 1.5vw, 14px)",
-          fontWeight: 500,
-          letterSpacing: "0.45em",
+          fontSize: "clamp(12px, 1.8vw, 16px)",
+          fontWeight: 400,
+          letterSpacing: "0.5em",
           margin: 0,
         }}
       >
@@ -147,11 +138,11 @@ export function HeroWordmark() {
       {/* Bottom ornament */}
       <div
         data-reveal="rule-bottom"
-        className="mt-6 flex items-center gap-3 md:mt-8"
+        className="mt-8 flex items-center gap-4 md:mt-10"
       >
-        <span className="h-px w-14 bg-brass opacity-50 md:w-16" />
-        <span className="h-1 w-1 rotate-45 bg-brass opacity-80" />
-        <span className="h-px w-14 bg-brass opacity-50 md:w-16" />
+        <span className="h-px w-16 bg-brass opacity-40 md:w-20" />
+        <span className="h-1.5 w-1.5 rotate-45 bg-brass opacity-70" />
+        <span className="h-px w-16 bg-brass opacity-40 md:w-20" />
       </div>
     </div>
   );
