@@ -43,9 +43,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable} bg-black`}
+      style={{ backgroundColor: '#000000' }}
     >
-      <body>{children}</body>
+      <body className="bg-black antialiased" style={{ backgroundColor: '#000000' }}>{children}</body>
     </html>
   );
 }

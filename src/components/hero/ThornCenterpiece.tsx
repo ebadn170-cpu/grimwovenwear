@@ -55,15 +55,47 @@ export function ThornCenterpiece() {
       <svg
         ref={svgRef}
         viewBox="0 0 2048 751"
-        className="w-[140%] max-w-none opacity-0 sm:w-[120%] md:w-[100%] lg:w-[90%]"
+        className="w-[180%] max-w-none opacity-0 sm:w-[150%] md:w-[120%] lg:w-[100%]"
         style={{ 
-          filter: "drop-shadow(0 12px 40px rgba(0, 0, 0, 0.7))",
+          filter: "drop-shadow(0 0 40px rgba(0,0,0,0.8))",
         }}
       >
-        {/* Simplified paths for the component - in a real scenario, we'd include all paths or a optimized set */}
-        {/* For now, we'll use a placeholder or a few key paths to maintain performance and readability */}
-        <g transform="translate(0, 0)">
-           <image href="/thornpng.svg" width="2048" height="751" />
+        <defs>
+          {/* Edge masking to prevent rectangular boundaries */}
+          <mask id="masterThornMask">
+            <rect width="2048" height="751" fill="url(#radialFade)" />
+            <radialGradient id="radialFade" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="white" stopOpacity="0" />
+              <stop offset="30%" stopColor="white" stopOpacity="0.5" />
+              <stop offset="85%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="black" />
+            </radialGradient>
+          </mask>
+          
+          {/* Specific mask for the center to keep text clear */}
+          <mask id="textProtectionMask">
+            <rect width="2048" height="751" fill="white" />
+            <radialGradient id="clearText" cx="50%" cy="50%" r="45%">
+              <stop offset="0%" stopColor="black" stopOpacity="0.95" />
+              <stop offset="60%" stopColor="black" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="white" />
+            </radialGradient>
+            <rect width="2048" height="751" fill="url(#clearText)" />
+          </mask>
+        </defs>
+        
+        <g mask="url(#masterThornMask)">
+          <g mask="url(#textProtectionMask)">
+             <image 
+               href="/thornpng.svg" 
+               width="2048" 
+               height="751" 
+               className="opacity-90"
+               style={{ 
+                 filter: "brightness(0.7) contrast(1.3) grayscale(0.1)",
+               }} 
+             />
+          </g>
         </g>
       </svg>
     </div>

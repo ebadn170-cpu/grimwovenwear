@@ -36,7 +36,7 @@ export function HeroCanvas() {
     };
   }, []);
 
-  if (!isVisible) return <div className="absolute inset-0 z-0 bg-[#050505]" aria-hidden="true" />;
+  if (!isVisible) return <div className="absolute inset-0 z-0 bg-[#020202]" aria-hidden="true" />;
 
   return (
     <div data-hero-canvas className="absolute inset-0 z-0" aria-hidden="true">
@@ -45,25 +45,28 @@ export function HeroCanvas() {
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.3} />
+        <ambientLight intensity={0.05} />
+        <spotLight position={[0, 10, 5]} angle={0.3} penumbra={1} intensity={2.5} color="#ffffff" />
+        <pointLight position={[0, 5, 2]} intensity={1.5} color="#ffffff" />
+        <pointLight position={[0, -5, 2]} intensity={0.2} color="#C6A15B" />
 
         <Sparkles
-          count={reducedMotion ? 20 : 110}
-          scale={[10, 6, 4]}
-          size={2.4}
-          speed={reducedMotion ? 0 : 0.18}
-          opacity={0.55}
-          color="#C6A15B"
+          count={reducedMotion ? 20 : 180}
+          scale={[15, 10, 8]}
+          size={1.5}
+          speed={reducedMotion ? 0 : 0.1}
+          opacity={0.5}
+          color="#ffffff"
           noise={1.2}
         />
         <Sparkles
-          count={reducedMotion ? 10 : 70}
-          scale={[11, 7, 5]}
-          size={1.4}
-          speed={reducedMotion ? 0 : 0.08}
-          opacity={0.28}
-          color="#5c1a1b"
-          noise={1.4}
+          count={reducedMotion ? 10 : 90}
+          scale={[14, 10, 8]}
+          size={1.2}
+          speed={reducedMotion ? 0 : 0.06}
+          opacity={0.2}
+          color="#C6A15B"
+          noise={2}
         />
       </Canvas>
     </div>

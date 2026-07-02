@@ -12,7 +12,7 @@ export function HeroFooterRow() {
         {["IG", "FB", "PIN", "X"].map((social) => (
           <button 
             key={social} 
-            className="text-[8px] font-semibold tracking-[0.3em] uppercase text-parchment-ghost transition-all duration-300 hover:text-brass"
+            className="text-[9px] font-medium tracking-[0.4em] uppercase text-parchment/40 transition-all duration-500 hover:text-parchment"
           >
             {social}
           </button>
@@ -21,20 +21,23 @@ export function HeroFooterRow() {
 
       {/* Scroll Cue */}
       <div className="flex flex-col items-center gap-4">
-        <span className="text-[8px] font-semibold tracking-[0.4em] uppercase text-parchment-ghost">
+        <span className="text-[9px] font-medium tracking-[0.5em] uppercase text-parchment/40">
           Scroll
         </span>
-        <div className="h-14 w-px bg-gradient-to-b from-brass via-brass to-transparent opacity-60" />
+        <div className="relative flex flex-col items-center">
+          <div className="h-12 w-px bg-gradient-to-b from-parchment/40 via-parchment/20 to-transparent" />
+          <div className="absolute bottom-0 h-1.5 w-1.5 rotate-45 border-b border-r border-parchment/40" />
+        </div>
       </div>
 
       {/* Enter Atelier */}
-      <button className="group flex items-center gap-3">
-        <span className="text-[8px] font-semibold tracking-[0.3em] uppercase text-parchment transition-all duration-300 group-hover:text-brass">
+      <button className="group flex items-center gap-4">
+        <span className="text-[9px] font-semibold tracking-[0.4em] uppercase text-parchment/80 transition-all duration-500 group-hover:text-parchment">
           Enter Atelier
         </span>
-        <div className="flex items-center gap-1">
-          <div className="h-px w-10 bg-parchment transition-all duration-300 group-hover:w-14 group-hover:bg-brass" />
-          <div className="h-2 w-2 rotate-45 border-t border-r border-parchment transition-all duration-300 group-hover:border-brass" />
+        <div className="relative flex items-center">
+          <div className="h-px w-12 bg-parchment/30 transition-all duration-500 group-hover:w-16 group-hover:bg-parchment/60" />
+          <div className="absolute right-0 h-1.5 w-1.5 rotate-45 border-t border-r border-parchment/40 transition-all duration-500 group-hover:border-parchment/80" />
         </div>
       </button>
     </div>

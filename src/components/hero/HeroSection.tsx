@@ -40,7 +40,11 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative h-screen w-full overflow-hidden">
+    <section 
+      ref={containerRef} 
+      className="fixed inset-0 h-screen w-full overflow-hidden bg-black selection:bg-brass/30"
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+    >
       <HeroBackground />
       <HeroCanvas />
       <ThornCenterpiece />
