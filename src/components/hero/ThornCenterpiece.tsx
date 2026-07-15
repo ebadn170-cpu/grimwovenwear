@@ -26,38 +26,33 @@ export function ThornCenterpiece() {
   useEffect(() => {
     if (!svgRef.current) return;
 
-    const paths = svgRef.current.querySelectorAll("path");
-    
-    // Breathing animation
-    gsap.to(paths, {
-      y: "random(-8, 8)",
-      rotation: "random(-1.5, 1.5)",
-      duration: "random(4, 6)",
+    // Use hardware-accelerated transforms and avoid querySelectorAll in loops
+    // Simplified animation for better performance
+    gsap.to(svgRef.current, {
+      y: "+=10",
+      duration: 4,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut",
-      stagger: {
-        amount: 2.5,
-        from: "random",
-      },
     });
 
-    // Initial entrance
+    // Initial entrance with force3D for GPU acceleration
     gsap.fromTo(
       svgRef.current,
-      { opacity: 0, scale: 0.85 },
-      { opacity: 0.85, scale: 1, duration: 2.5, ease: "expo.out" }
+      { opacity: 0, scale: 0.9, force3D: true },
+      { opacity: 0.9, scale: 1, duration: 2, ease: "power2.out" }
     );
   }, []);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center overflow-hidden will-change-transform">
       <svg
         ref={svgRef}
         viewBox="0 0 2048 751"
-        className="w-[180%] max-w-none opacity-0 sm:w-[150%] md:w-[120%] lg:w-[100%]"
+        className="w-[180%] max-w-none opacity-0 sm:w-[150%] md:w-[120%] lg:w-[100%] will-change-transform"
         style={{ 
-          filter: "drop-shadow(0 0 40px rgba(0,0,0,0.8))",
+          filter: "drop-shadow(0 0 30px rgba(0,0,0,0.6))",
+          transform: "translateZ(0)", // Force GPU layer
         }}
       >
         <defs>

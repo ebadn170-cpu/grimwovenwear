@@ -6,15 +6,16 @@
  */
 export function HeroBackground() {
   return (
-    <div className="absolute inset-0 z-[-1] bg-black overflow-hidden">
+    <div className="absolute inset-0 z-[-1] bg-black overflow-hidden will-change-transform" style={{ transform: 'translateZ(0)' }}>
       {/* Dramatic Top-Down Cinematic Lighting (Volumetric Rays) */}
       <div 
-        className="absolute inset-0 opacity-80"
+        className="absolute inset-0 opacity-80 will-change-transform"
         style={{
           background: `
             radial-gradient(ellipse 1000px 1500px at 50% -30%, rgba(255, 255, 255, 0.2) 0%, transparent 70%),
             radial-gradient(ellipse 500px 800px at 50% -10%, rgba(255, 255, 255, 0.15) 0%, transparent 60%)
-          `
+          `,
+          transform: 'translateZ(0)'
         }}
       />
       

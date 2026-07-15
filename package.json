@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:e2e": "playwright test",
+"test:e2e:update-snapshots": "playwright test --update-snapshots",
+"test": "playwright test"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",

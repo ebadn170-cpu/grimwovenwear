@@ -46,7 +46,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable} bg-black`}
       style={{ backgroundColor: '#000000' }}
     >
-      <body className="bg-black antialiased" style={{ backgroundColor: '#000000' }}>{children}</body>
+      <body className="bg-black antialiased">{children}</body>
     </html>
   );
 }
