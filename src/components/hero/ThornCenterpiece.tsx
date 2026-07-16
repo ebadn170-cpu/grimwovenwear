@@ -36,10 +36,14 @@ export function ThornCenterpiece() {
       ease: "sine.inOut",
     });
 
-    // Initial entrance with force3D for GPU acceleration
+    // Initial entrance with force3D for GPU acceleration.
+    // Starts at opacity 0.001 rather than 0 — at exactly 0 the element is
+    // excluded from LCP candidacy, so the browser only records this paint
+    // once the fade finishes, dragging LCP out by ~2s. 0.001 is visually
+    // invisible but keeps it eligible from first paint.
     gsap.fromTo(
       svgRef.current,
-      { opacity: 0, scale: 0.9, force3D: true },
+      { opacity: 0.001, scale: 0.9, force3D: true },
       { opacity: 0.9, scale: 1, duration: 2, ease: "power2.out" }
     );
   }, []);
@@ -49,7 +53,7 @@ export function ThornCenterpiece() {
       <svg
         ref={svgRef}
         viewBox="0 0 2048 751"
-        className="w-[180%] max-w-none opacity-0 sm:w-[150%] md:w-[120%] lg:w-[100%] will-change-transform"
+        className="w-[180%] max-w-none sm:w-[150%] md:w-[120%] lg:w-[100%] will-change-transform"
         style={{ 
           filter: "drop-shadow(0 0 30px rgba(0,0,0,0.6))",
           transform: "translateZ(0)", // Force GPU layer

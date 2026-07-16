@@ -52,7 +52,13 @@ export function HeroWordmark() {
         )
         .fromTo(
           "[data-reveal='wordmark']",
-          { opacity: 0, y: 32, filter: "blur(8px)" },
+          // opacity starts at 0.001, not 0 — an element at opacity 0 is
+          // excluded from LCP candidacy entirely, so fading in from true
+          // zero pushes the recorded LCP timestamp all the way to when
+          // this tween finishes instead of first paint. 0.001 is visually
+          // indistinguishable but keeps the element LCP-eligible from the
+          // start.
+          { opacity: 0.001, y: 32, filter: "blur(8px)" },
           { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "expo.out" },
           "-=0.2"
         )
